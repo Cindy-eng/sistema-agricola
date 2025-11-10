@@ -1,6 +1,6 @@
-package com.agro.iot.repository;
+package  sistemaagricola.com.projecto.repositories;
 
-import com.agro.iot.model.Telemetria;
+import sistemaagricola.com.projecto.models.Telemetria;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.domain.Pageable;

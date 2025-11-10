@@ -1,16 +1,16 @@
 // service/impl/ParcelaServiceImpl.java
-package com.agro.iot.service.impl;
-import com.agro.iot.model.Parcela;
-import com.agro.iot.repository.ParcelaRepository;
-import com.agro.iot.service.ParcelaService;
-import com.agro.iot.exception.*;
+package sistemaagricola.com.projecto.service.impl;
+import sistemaagricola.com.projecto.models.Parcela;
+import sistemaagricola.com.projecto.repositories.ParecelaRepository;
+import sistemaagricola.com.projecto.service.ParcelaService;
+import sistemaagricola.com.projecto.exception.*;
 import org.springframework.stereotype.Service; import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service @Transactional
 public class ParcelaServiceImpl implements ParcelaService {
-  private final ParcelaRepository repo;
-  public ParcelaServiceImpl(ParcelaRepository repo){ this.repo=repo; }
+  private final ParecelaRepository repo;
+  public ParcelaServiceImpl(ParecelaRepository repo){ this.repo=repo; }
 
   public Parcela criar(Parcela p){
     if(repo.existsByNome(p.getNome())) throw new BusinessException("Parcela já existe");

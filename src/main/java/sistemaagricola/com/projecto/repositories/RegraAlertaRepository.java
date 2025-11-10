@@ -1,7 +1,7 @@
 // src/main/java/com/agro/iot/repository/RegraAlertaRepository.java
-package com.agro.iot.repository;
+package sistemaagricola.com.projecto.repositories;
 
-import com.agro.iot.model.RegraAlerta;
+import  sistemaagricola.com.projecto.models.RegraAlerta;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
