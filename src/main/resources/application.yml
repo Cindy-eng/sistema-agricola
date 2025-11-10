@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/agro_iot
+    username: agro
+    password: 1234
+  jpa:
+    hibernate:
+      ddl-auto: update # em produção usar migrações (Flyway)
+    properties:
+      hibernate.jdbc.time_zone: UTC
+      hibernate.format_sql: true
+    open-in-view: false
+server:
+  port: 8080
