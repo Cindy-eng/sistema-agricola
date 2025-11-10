@@ -1,6 +1,7 @@
 // service/ParcelaService.java
-package com.agro.iot.service;
-import com.agro.iot.model.Parcela; import java.util.List;
+package sistemaagricola.com.projecto.service;
+
+import sistemaagricola.com.projecto.models.Parcela; import java.util.List;
 public interface ParcelaService {
   Parcela criar(Parcela p);
   Parcela obter(Long id);

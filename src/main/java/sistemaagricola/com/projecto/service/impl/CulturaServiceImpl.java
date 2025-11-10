@@ -1,9 +1,9 @@
 // service/impl/CulturaServiceImpl.java
-package com.agro.iot.service.impl;
-import com.agro.iot.model.Cultura;
-import com.agro.iot.repository.CulturaRepository;
-import com.agro.iot.service.CulturaService;
-import com.agro.iot.exception.*;
+package sistemaagricola.com.projecto.service.impl;
+import sistemaagricola.com.projecto.models.Cultura;
+import sistemaagricola.com.projecto.repositories.CulturaRepository;
+import sistemaagricola.com.projecto.service.CulturaService;
+import sistemaagricola.com.projecto.exception.*;
 import org.springframework.stereotype.Service; import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
