@@ -6,7 +6,7 @@ import sistemaagricola.com.projecto.models.Dispositivo;
 import java.util.List;
 
 public interface SensorRepository extends JpaRepository<Sensor,Long> {
-    boolean existsByDispositivoAndTipo(Dispositivo dispositivo, String tipo); // Alteração aqui
+    boolean existsByDispositivoIdAndTipo(Long dispositivoId, String tipo); // Alteração aqui
     List<Sensor> findByDispositivoId(Long dispositivoId);
 
     List<Sensor> findByDispositivoDeviceKey(String deviceKey);
