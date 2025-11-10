@@ -1,8 +1,11 @@
 package sistemaagricola.com.projecto.service;
 
 import sistemaagricola.com.projecto.models.Dispositivo;
-import org.springframework.data.domain.*;
-import java.util.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+import java.util.Optional;
 
 public interface DispositivoService {
     Dispositivo criar(Dispositivo d);
