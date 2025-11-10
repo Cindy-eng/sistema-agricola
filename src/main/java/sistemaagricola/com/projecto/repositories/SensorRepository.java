@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface SensorRepository extends JpaRepository<Sensor,Long> {
     List<Sensor> findByDispositivoId(Long dispositivoId);
+
+    boolean existsByDispositivoIdAndTipo(Long dispositivoId, String tipo);
 }
