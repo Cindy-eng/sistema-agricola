@@ -15,3 +15,7 @@ spring:
     open-in-view: false
 server:
   port: 8080
+
+jwt:
+  secret: mySecretKeyForJWTTokenGenerationThatShouldBeAtLeast256BitsLongForHS256AlgorithmChangeThisInProduction
+  expiration: 86400000 # 24 hours in milliseconds

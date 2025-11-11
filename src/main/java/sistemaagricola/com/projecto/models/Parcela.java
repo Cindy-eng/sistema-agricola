@@ -2,7 +2,9 @@
 package sistemaagricola.com.projecto.models;
 import jakarta.persistence.*;
 import lombok.*;
-@Entity @Table(name="parcela")
+@Entity @Table(name="parcela", indexes = {
+    @Index(name="idx_parcela_usuario", columnList="usuario_id")
+})
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
 @Getter
 @Setter
@@ -13,4 +15,7 @@ public class Parcela {
     private String nome;
     private Double lat;
     private Double lon;
+    @ManyToOne(optional=false)
+    @JoinColumn(name="usuario_id", nullable=false)
+    private User usuario;
 }

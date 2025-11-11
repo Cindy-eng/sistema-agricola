@@ -1,0 +1,127 @@
+### REST Client para VS Code
+### Instale a extensão "REST Client" no VS Code para usar este arquivo
+
+@baseUrl = http://localhost:8080
+@token = 
+
+### 1. Registrar Novo Usuário
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "nome": "João Silva",
+  "email": "joao@example.com",
+  "password": "senha123"
+}
+
+### 2. Login
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "joao@example.com",
+  "password": "senha123"
+}
+
+### Copie o token da resposta acima e cole na variável @token acima
+
+### 3. Criar Parcela
+POST {{baseUrl}}/api/parcelas
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "nome": "Parcela Norte",
+  "lat": -15.7975,
+  "lon": -47.8919
+}
+
+### 4. Listar Parcelas
+GET {{baseUrl}}/api/parcelas
+Authorization: Bearer {{token}}
+
+### 5. Obter Parcela por ID (substitua {id} pelo ID real)
+GET {{baseUrl}}/api/parcelas/1
+Authorization: Bearer {{token}}
+
+### 6. Criar Cultura
+POST {{baseUrl}}/api/culturas
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "nome": "Milho"
+}
+
+### 7. Listar Culturas
+GET {{baseUrl}}/api/culturas
+Authorization: Bearer {{token}}
+
+### 8. Criar Dispositivo (substitua o objeto parcela pelo ID real da parcela criada)
+POST {{baseUrl}}/api/dispositivos
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "deviceKey": "DEVICE-001",
+  "tipo": "Sensor de Umidade",
+  "modelo": "SM-2024",
+  "firmware": "v1.0.0",
+  "parcela": {
+    "id": 1,
+    "nome": "Parcela Norte",
+    "lat": -15.7975,
+    "lon": -47.8919
+  },
+  "estado": "ACTIVO"
+}
+
+### 9. Listar Dispositivos
+GET {{baseUrl}}/api/dispositivos
+Authorization: Bearer {{token}}
+
+### 10. Criar Sensor (substitua dispositivoId pelo ID real)
+POST {{baseUrl}}/api/sensores
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "dispositivoId": 1,
+  "tipo": "UMIDADE_SOLO",
+  "unidade": "%"
+}
+
+### 11. Ingestão de Telemetria (PÚBLICO - não precisa token)
+POST {{baseUrl}}/api/telemetria/ingestao
+Content-Type: application/json
+
+{
+  "deviceKey": "DEVICE-001",
+  "sensorId": 1,
+  "ts": "2025-01-11T10:30:00Z",
+  "valor": 65.5
+}
+
+### 12. Obter Telemetria por Janela
+GET {{baseUrl}}/api/telemetria/janela?sensorId=1&ini=2025-01-11T00:00:00Z&fim=2025-01-11T23:59:59Z
+Authorization: Bearer {{token}}
+
+### 13. Obter Última Telemetria
+GET {{baseUrl}}/api/telemetria/ultima?sensorId=1
+Authorization: Bearer {{token}}
+
+### 14. Atualizar Parcela
+PUT {{baseUrl}}/api/parcelas/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "nome": "Parcela Norte Atualizada",
+  "lat": -15.8000,
+  "lon": -47.9000
+}
+
+### 15. Deletar Parcela
+DELETE {{baseUrl}}/api/parcelas/1
+Authorization: Bearer {{token}}
+

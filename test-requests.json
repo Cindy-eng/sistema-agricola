@@ -1,0 +1,87 @@
+{
+  "register": {
+    "endpoint": "POST /api/auth/register",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "nome": "João Silva",
+      "email": "joao@example.com",
+      "password": "senha123"
+    }
+  },
+  "login": {
+    "endpoint": "POST /api/auth/login",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "email": "joao@example.com",
+      "password": "senha123"
+    }
+  },
+  "createParcela": {
+    "endpoint": "POST /api/parcelas",
+    "headers": {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer SEU_TOKEN_AQUI"
+    },
+    "body": {
+      "nome": "Parcela Norte",
+      "lat": -15.7975,
+      "lon": -47.8919
+    }
+  },
+  "listParcelas": {
+    "endpoint": "GET /api/parcelas",
+    "headers": {
+      "Authorization": "Bearer SEU_TOKEN_AQUI"
+    }
+  },
+  "createDispositivo": {
+    "endpoint": "POST /api/dispositivos",
+    "headers": {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer SEU_TOKEN_AQUI"
+    },
+    "body": {
+      "deviceKey": "DEVICE-001",
+      "tipo": "Sensor de Umidade",
+      "modelo": "SM-2024",
+      "firmware": "v1.0.0",
+      "parcela": {
+        "id": 1,
+        "nome": "Parcela Norte",
+        "lat": -15.7975,
+        "lon": -47.8919
+      },
+      "estado": "ACTIVO"
+    },
+    "nota": "Você precisa criar uma Parcela primeiro e usar o objeto completo aqui, ou modificar o controller para aceitar apenas parcelaId"
+  },
+  "ingestTelemetria": {
+    "endpoint": "POST /api/telemetria/ingestao",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "deviceKey": "DEVICE-001",
+      "sensorId": 1,
+      "ts": "2025-01-11T10:30:00Z",
+      "valor": 65.5
+    }
+  },
+  "createSensor": {
+    "endpoint": "POST /api/sensores",
+    "headers": {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer SEU_TOKEN_AQUI"
+    },
+    "body": {
+      "dispositivoId": 1,
+      "tipo": "UMIDADE_SOLO",
+      "unidade": "%"
+    }
+  }
+}
+
