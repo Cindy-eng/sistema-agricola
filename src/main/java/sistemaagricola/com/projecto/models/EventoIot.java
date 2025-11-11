@@ -8,6 +8,8 @@ import java.time.Instant;
         @Index(name="idx_evt_dispositivo_ts", columnList="dispositivo_id,ts")
 })
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
+@Setter
+@Getter
 public class EventoIot {
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY) private Long id;
     @ManyToOne(optional=false) private Dispositivo dispositivo;

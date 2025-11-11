@@ -4,6 +4,8 @@ import jakarta.persistence.*; import lombok.*;
 
 @Entity @Table(name="regra_alerta")
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
+@Getter
+@Setter
 public class RegraAlerta {
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY) private Long id;
     @ManyToOne(optional=false) private Parcela parcela; // ou Cultura, conforme uso

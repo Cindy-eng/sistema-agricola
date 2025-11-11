@@ -6,6 +6,8 @@ import jakarta.persistence.*; import lombok.*;
 import java.time.Instant;
 @Entity @Table(name="manutencao")
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
+@Setter
+@Getter
 public class Manutencao {
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY) private Long id;
     @ManyToOne(optional=false) private Dispositivo dispositivo;

@@ -8,6 +8,8 @@ import java.time.Instant;
         @Index(name="idx_tel_sensor_ts", columnList="sensor_id,ts")
 })
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
+@Getter
+@Setter
 public class Telemetria {
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY) private Long id;
     @ManyToOne(optional=false) private Sensor sensor;

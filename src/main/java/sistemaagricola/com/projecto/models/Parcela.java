@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 @Entity @Table(name="parcela")
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
+@Getter
+@Setter
 public class Parcela {
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
