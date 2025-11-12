@@ -2,6 +2,7 @@
 package sistemaagricola.com.projecto.models;
 import jakarta.persistence.*;
 import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity @Table(name="parcela", indexes = {
     @Index(name="idx_parcela_usuario", columnList="usuario_id")
 })
@@ -17,5 +18,6 @@ public class Parcela {
     private Double lon;
     @ManyToOne(optional=false)
     @JoinColumn(name="usuario_id", nullable=false)
+    @JsonIgnore
     private User usuario;
 }
