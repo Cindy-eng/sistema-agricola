@@ -1,0 +1,3 @@
+org.springframework.context.ApplicationListener=\
+sistemaagricola.com.projecto.config.DatabaseConfig
+
