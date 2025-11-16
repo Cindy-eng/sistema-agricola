@@ -1,7 +1,7 @@
 package sistemaagricola.com.projecto.config;
 
-import org.springframework.boot.context.event.ApplicationEnvironmentPreparedEvent;
-import org.springframework.context.ApplicationListener;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
 
@@ -9,20 +9,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Converte automaticamente a URL do banco de dados do formato Render
- * (postgresql://user:pass@host/db) para formato JDBC (jdbc:postgresql://host:port/db)
+ * EnvironmentPostProcessor que converte a URL do banco de dados do formato Render
+ * para formato JDBC antes da inicialização do DataSource.
+ * 
+ * Executa ANTES do ApplicationEnvironmentPreparedEvent, garantindo que a conversão
+ * aconteça antes de qualquer bean ser criado.
  */
-public class DatabaseConfig implements ApplicationListener<ApplicationEnvironmentPreparedEvent> {
+public class DatabaseUrlEnvironmentPostProcessor implements EnvironmentPostProcessor {
 
     @Override
-    public void onApplicationEvent(ApplicationEnvironmentPreparedEvent event) {
-        ConfigurableEnvironment environment = event.getEnvironment();
+    public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
         String datasourceUrl = environment.getProperty("SPRING_DATASOURCE_URL");
         
         if (datasourceUrl != null && !datasourceUrl.isEmpty()) {
             String convertedUrl = convertToJdbcUrl(datasourceUrl);
             
-            if (!convertedUrl.equals(datasourceUrl)) {
+            // Sempre substitui se a URL foi convertida ou contém credenciais
+            if (!convertedUrl.equals(datasourceUrl) || datasourceUrl.contains("@")) {
                 Map<String, Object> properties = new HashMap<>();
                 properties.put("spring.datasource.url", convertedUrl);
                 
@@ -33,33 +36,48 @@ public class DatabaseConfig implements ApplicationListener<ApplicationEnvironmen
     }
 
     /**
-     * Converte URL do Render (postgresql://user:pass@host/db) 
-     * para formato JDBC (jdbc:postgresql://host:port/db)
+     * Converte URL do Render (postgresql://user:pass@host/db ou jdbc:postgresql://user:pass@host/db) 
+     * para formato JDBC (jdbc:postgresql://host:port/db) removendo credenciais
      */
     private String convertToJdbcUrl(String url) {
         if (url == null || url.isEmpty()) {
             return url;
         }
 
-        // Se já está no formato JDBC, retorna como está
-        if (url.startsWith("jdbc:postgresql://")) {
+        boolean isJdbcFormat = url.startsWith("jdbc:postgresql://");
+        boolean isPostgresqlFormat = url.startsWith("postgresql://");
+        
+        // Se não é nenhum dos formatos esperados, retorna como está
+        if (!isJdbcFormat && !isPostgresqlFormat) {
             return url;
         }
 
-        // Se está no formato postgresql://, converte
-        if (url.startsWith("postgresql://")) {
+        // Remove o prefixo apropriado
+        String urlWithoutPrefix;
+        if (isJdbcFormat) {
+            urlWithoutPrefix = url.substring("jdbc:postgresql://".length());
+        } else {
+            urlWithoutPrefix = url.substring("postgresql://".length());
+        }
+
+        // Verifica se tem credenciais embutidas (@)
+        boolean hasCredentials = urlWithoutPrefix.contains("@");
+        
+        // Se está no formato postgresql:// ou tem credenciais, converte
+        if (isPostgresqlFormat || hasCredentials) {
             try {
-                // Remove o prefixo postgresql://
-                String urlWithoutPrefix = url.substring("postgresql://".length());
-                
-                // Encontra o @ que separa credenciais do host
-                int atIndex = urlWithoutPrefix.indexOf('@');
                 String hostAndPath;
                 
-                if (atIndex != -1) {
+                if (hasCredentials) {
+                    // Encontra o @ que separa credenciais do host
+                    int atIndex = urlWithoutPrefix.indexOf('@');
                     // Remove as credenciais (user:password@)
                     hostAndPath = urlWithoutPrefix.substring(atIndex + 1);
                 } else {
+                    // Se não tem credenciais e já está no formato JDBC, retorna como está
+                    if (isJdbcFormat) {
+                        return url;
+                    }
                     hostAndPath = urlWithoutPrefix;
                 }
                 
@@ -101,7 +119,6 @@ public class DatabaseConfig implements ApplicationListener<ApplicationEnvironmen
                 }
             } catch (Exception e) {
                 // Se falhar a conversão, retorna a URL original
-                // Log do erro seria útil aqui, mas não temos logger neste ponto
                 return url;
             }
         }
