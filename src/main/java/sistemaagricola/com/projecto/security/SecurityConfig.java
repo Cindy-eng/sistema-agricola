@@ -89,7 +89,8 @@ public class SecurityConfig {
         configuration.setMaxAge(3600L);
         
         org.springframework.web.cors.UrlBasedCorsConfigurationSource source = new org.springframework.web.cors.UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/api/**", configuration);
+        // Aplica CORS a todos os endpoints
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 
@@ -97,12 +98,15 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(AbstractHttpConfigurer::disable)
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .authorizeHttpRequests(auth -> auth
                 // Swagger/OpenAPI endpoints - devem vir primeiro e ser explícitos
                 .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/swagger-ui/index.html").permitAll()
                 .requestMatchers("/v3/api-docs/**", "/v3/api-docs", "/v3/api-docs.yaml").permitAll()
                 .requestMatchers("/swagger-resources/**", "/swagger-resources").permitAll()
                 .requestMatchers("/webjars/**", "/webjars").permitAll()
+                // OPTIONS requests para CORS preflight
+                .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
                 // API endpoints públicos
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/telemetria/ingestao").permitAll()
@@ -113,7 +117,6 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .authenticationProvider(authenticationProvider())
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

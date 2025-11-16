@@ -28,6 +28,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
+        String method = request.getMethod();
+        // Ignora requisições OPTIONS (preflight CORS)
+        if ("OPTIONS".equalsIgnoreCase(method)) {
+            return true;
+        }
         return path.startsWith("/swagger-ui") || 
                path.startsWith("/v3/api-docs") || 
                path.startsWith("/swagger-resources") ||
