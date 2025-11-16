@@ -44,3 +44,7 @@ logs/
 ### OS ###
 .DS_Store
 Thumbs.db
+
+### Docker ###
+.dockerignore
+# Mantém Dockerfile e render.yaml no repositório

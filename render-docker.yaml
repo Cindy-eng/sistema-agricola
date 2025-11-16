@@ -1,3 +1,10 @@
+# render.yaml para deploy com Docker
+# Use este arquivo se quiser usar Blueprint no Render
+# 
+# IMPORTANTE: Se você já tem um banco de dados criado,
+# remova a seção "databases" abaixo e configure as variáveis
+# de ambiente manualmente no Dashboard do Render
+
 services:
   - type: web
     name: sistema-agricola-api
@@ -11,6 +18,8 @@ services:
         value: prod
       - key: JAVA_VERSION
         value: 21
+      # Se você TEM um banco existente, remova as 3 variáveis abaixo
+      # e configure manualmente no Dashboard com as credenciais do seu banco
       - key: SPRING_DATASOURCE_URL
         fromDatabase:
           name: sistema-agricola-db
@@ -23,11 +32,13 @@ services:
         fromDatabase:
           name: sistema-agricola-db
           property: password
-      - key: JWT_SECRET
-        generateValue: true
+      # JWT_SECRET deve ser gerado e configurado manualmente
+      # Não use generateValue em produção - gere uma chave segura
       - key: JWT_EXPIRATION
         value: 86400000
 
+# Se você JÁ TEM um banco de dados, REMOVA ou COMENTE a seção abaixo
+# Se você QUER criar um novo banco, mantenha esta seção
 databases:
   - name: sistema-agricola-db
     databaseName: sistema_agricola
