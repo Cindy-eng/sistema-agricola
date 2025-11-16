@@ -19,3 +19,15 @@ server:
 jwt:
   secret: mySecretKeyForJWTTokenGenerationThatShouldBeAtLeast256BitsLongForHS256AlgorithmChangeThisInProduction
   expiration: 86400000 # 24 hours in milliseconds
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+    try-it-out-enabled: true
+  show-actuator: false
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json

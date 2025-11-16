@@ -79,17 +79,24 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
+                // Swagger/OpenAPI endpoints - devem vir primeiro e ser explícitos
+                .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/swagger-ui/index.html").permitAll()
+                .requestMatchers("/v3/api-docs/**", "/v3/api-docs", "/v3/api-docs.yaml").permitAll()
+                .requestMatchers("/swagger-resources/**", "/swagger-resources").permitAll()
+                .requestMatchers("/webjars/**", "/webjars").permitAll()
+                // API endpoints públicos
                 .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/api/telemetria/ingestao").permitAll() // Allow IoT device ingestion
+                .requestMatchers("/api/telemetria/ingestao").permitAll()
+                // Todos os outros endpoints requerem autenticação
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .authenticationProvider(authenticationProvider())
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
