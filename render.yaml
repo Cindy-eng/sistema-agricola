@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: sistema-agricola-api
+    env: java
+    region: oregon
+    plan: free
+    buildCommand: chmod +x ./mvnw && ./mvnw clean install -DskipTests || mvn clean install -DskipTests
+    startCommand: java -jar target/projecto-0.0.1-SNAPSHOT.jar
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: JAVA_VERSION
+        value: 21
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: sistema-agricola-db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: sistema-agricola-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: sistema-agricola-db
+          property: password
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRATION
+        value: 86400000
+
+databases:
+  - name: sistema-agricola-db
+    databaseName: sistema_agricola
+    user: sistema_user
+    plan: free
+

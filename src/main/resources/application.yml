@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/sistema_agricola
-    username: postgres
-    password: 1234
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/sistema_agricola}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:1234}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -14,11 +14,11 @@ spring:
         format_sql: true
     open-in-view: false
 server:
-  port: 8080
+  port: ${PORT:8080}
 
 jwt:
-  secret: mySecretKeyForJWTTokenGenerationThatShouldBeAtLeast256BitsLongForHS256AlgorithmChangeThisInProduction
-  expiration: 86400000 # 24 hours in milliseconds
+  secret: ${JWT_SECRET:mySecretKeyForJWTTokenGenerationThatShouldBeAtLeast256BitsLongForHS256AlgorithmChangeThisInProduction}
+  expiration: ${JWT_EXPIRATION:86400000} # 24 hours in milliseconds
 
 springdoc:
   api-docs:
